@@ -15,6 +15,7 @@ type RumahService interface {
 	Statistik(statistik dto.StatistikDTO) (*dto.StatistikDTO, error)
 	FindAll(pagination dto.Pagination) (*dto.Pagination, error)
 	FindById(id dto.RumahFindIdDTO) entity.Rumah
+	FindByKota(id dto.RumahFindIdDTO) []entity.Rumah
 	FindAllByKota(pagination dto.Pagination) (*dto.Pagination, error)
 	Delete(id uint64) entity.Rumah
 	DeleteByIds(id dto.RumahDeleteMultiID) entity.Rumah
@@ -62,6 +63,12 @@ func (service *rumahService) Delete(id uint64) entity.Rumah {
 func (service *rumahService) FindById(id dto.RumahFindIdDTO) entity.Rumah {
 
 	res := service.rumahRepository.FindById(id.Id)
+	return res
+}
+
+func (service *rumahService) FindByKota(id dto.RumahFindIdDTO) []entity.Rumah {
+
+	res := service.rumahRepository.FindByKota(id.Id)
 	return res
 }
 

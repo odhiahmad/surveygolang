@@ -12,6 +12,7 @@ type RumahRepository interface {
 	FindAll(pagination dto.Pagination) (*dto.Pagination, error)
 	FindAllByKota(pagination dto.Pagination) (*dto.Pagination, error)
 	FindById(id string) entity.Rumah
+	FindByKota(id string) []entity.Rumah
 	Delete(id uint64) entity.Rumah
 	Statistik(statistik dto.StatistikDTO) (*dto.StatistikDTO, error)
 	DeleteByIds(id *[]string) entity.Rumah
@@ -44,6 +45,13 @@ func (db *rumahConnection) UpdateRumah(rumah entity.Rumah) entity.Rumah {
 func (db *rumahConnection) FindById(id string) entity.Rumah {
 	var rumah entity.Rumah
 	db.connection.Where("id = ?", id).Take(&rumah)
+
+	return rumah
+}
+
+func (db *rumahConnection) FindByKota(id string) []entity.Rumah {
+	var rumah []entity.Rumah
+	db.connection.Where("kota = ?", id).Find(&rumah)
 
 	return rumah
 }

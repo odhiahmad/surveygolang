@@ -15,6 +15,7 @@ type RumahController interface {
 	UpdateRumah(ctx *gin.Context)
 	Statistik(ctx *gin.Context)
 	FindAll(ctx *gin.Context)
+	FindByKota(ctx *gin.Context)
 	FindAllByKota(ctx *gin.Context)
 	FindById(ctx *gin.Context)
 	Delete(ctx *gin.Context)
@@ -117,6 +118,20 @@ func (c *rumahController) FindById(ctx *gin.Context) {
 	}
 
 	findRumah := c.rumahService.FindById(idRumah)
+	response := helper.BuildResponse(true, "Data berhasil di select", findRumah)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (c *rumahController) FindByKota(ctx *gin.Context) {
+	var idKota dto.RumahFindIdDTO
+	errDTO := ctx.ShouldBind(&idKota)
+	if errDTO != nil {
+		response := helper.BuildErrorResponse("Failed to process request", errDTO.Error(), helper.EmptyObj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	findRumah := c.rumahService.FindByKota(idKota)
 	response := helper.BuildResponse(true, "Data berhasil di select", findRumah)
 	ctx.JSON(http.StatusOK, response)
 }

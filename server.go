@@ -66,6 +66,7 @@ func main() {
 		rumahRoutes.POST("/create", rumahController.CreateRumah)
 		rumahRoutes.PUT("/update", rumahController.UpdateRumah)
 		rumahRoutes.POST("/getById", rumahController.FindById)
+		rumahRoutes.POST("/getByKota", rumahController.FindByKota)
 		rumahRoutes.POST("/getAll", rumahController.FindAll)
 		rumahRoutes.POST("/getAllByKota", rumahController.FindAllByKota)
 		rumahRoutes.DELETE("/delete", rumahController.Delete)
