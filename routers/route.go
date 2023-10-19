@@ -1,4 +1,4 @@
-package main
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
@@ -25,29 +25,12 @@ var (
 	rumahController controller.RumahController = controller.NewRumahController(rumahService, jwtService)
 )
 
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
-}
-
-func main() {
+func SetupRouter() *gin.Engine {
 
 	defer config.CloseDatabaseConnection(db)
 	r := gin.Default()
-	r.Static("/image", "./fileupload")
-
-	r.Use(CORSMiddleware())
+	
 
 	authRoutes := r.Group("api/auth")
 	{
@@ -73,6 +56,6 @@ func main() {
 		rumahRoutes.GET("/statistik", rumahController.Statistik)
 		rumahRoutes.POST("/deleteById", rumahController.DeleteByIds)
 	}
-
-	r.Run()
+	
+	return r
 }
